@@ -1,0 +1,60 @@
+name: Deploy
+
+# Deploys the website, including the benchmark leaderboard, to
+# tuff-app.github.io. The leaderboard is built from posts in the Benchmarks
+# discussion category of tuff-app/TUFF, which reviews each post when it is made
+# (its benchmark-review workflow). Discussions there can't start a workflow
+# here without a stored token, so the site rebuilds every hour instead. Nothing
+# in a post is ever executed; its JSON is read as data.
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "17 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      # The leaderboard script and the benchmark suite live with the app.
+      - uses: actions/checkout@v4
+        with:
+          repository: tuff-app/TUFF
+          path: tuff
+          persist-credentials: false
+          sparse-checkout: |
+            .github/benchmark-suite.json
+            Scripts/benchmark_discussions.py
+          sparse-checkout-cone-mode: false
+      - name: Build the leaderboard data
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: GITHUB_REPOSITORY=tuff-app/TUFF python3 tuff/Scripts/benchmark_discussions.py build --output benchmarks/data.json
+      - name: Collect the site
+        run: |
+          mkdir -p "$RUNNER_TEMP/site"
+          cp -R index.html assets benchmarks TUFF "$RUNNER_TEMP/site/"
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: ${{ runner.temp }}/site
+      - id: deployment
+        uses: actions/deploy-pages@v4
