@@ -7,11 +7,13 @@ homepage and the [benchmark leaderboard](https://tuff-app.github.io/benchmarks/)
 | --- | --- |
 | `index.html` | The homepage |
 | `benchmarks/` | The leaderboard page and its script |
-| `assets/` | Images |
+| `assets/` | Images, the film (`tuff-film.mp4`) and its poster frame |
 | `TUFF/` | Redirects from the old `tuff-app.github.io/TUFF/` addresses |
 
 It's plain HTML, CSS and JavaScript with no build step. To preview it, run
 `python3 -m http.server` here and open http://localhost:8000.
+
+The homepage comparison lists TUFF's 18 catalog models.
 
 The leaderboard data isn't stored here. Every hour, and on each push,
 `.github/workflows/deploy.yml` reads the reviewed posts in TUFF's
