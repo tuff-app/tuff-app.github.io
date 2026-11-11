@@ -146,3 +146,13 @@ main { min-height:40vh; }
   .view-mobile, .sortbox select { width:86px; padding-right:18px; }
 }
 @media (prefers-reduced-motion:reduce) { *,*::before,*::after { transition:none !important; scroll-behavior:auto !important; } }
+
+/* Product-site typography; the measurements retain their existing layout. */
+.benchmark-intro{max-width:640px;color:var(--muted);font-size:16px;margin:18px 0 14px}
+.item,.state{border-radius:5px;box-shadow:none}
+.item{border-inline:0;border-top:0;border-bottom:1px solid var(--line);background:transparent}
+.item.held{border:1px dashed var(--line)}
+.list{gap:0}.item>.head{padding:18px 10px}.badge{border-radius:3px}
+header{padding-top:54px}h1{font-weight:600}.track{height:3px}
+.filters select,.filters input{border-radius:4px}.state{text-align:left;padding:25px 20px}
+@media(max-width:640px){header{padding-top:34px}.benchmark-intro{font-size:14px}.item>.head{padding:16px 0}}

@@ -1,5 +1,5 @@
 // The chip animation from the TUFF film: experts light up on the SSD, stream into unified
-// memory, the GPU cores flash, and the answer appears one word per token. Loops while visible.
+// memory and the GPU cores flash. The user controls playback.
 (() => {
   const cv = document.getElementById("chip");
   if (!cv) return;
@@ -114,16 +114,32 @@
     g.globalAlpha = 1;
   }
 
-  const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  if (still) { draw(LOOP - HOLD); addEventListener("resize", () => draw(LOOP - HOLD)); return; }
-  let visible = false, origin = 0, round = 0;
-  new IntersectionObserver(([e]) => { visible = e.isIntersecting; if (visible) { origin = performance.now(); round = 0; newRound(); } }, { threshold: 0.2 }).observe(cv);
-  (function frame(now) {
-    if (visible) {
-      const t = (now - origin) / 1000, r = Math.floor(t / LOOP);
-      if (r !== round) { round = r; newRound(); }
-      draw(t - r * LOOP);
-    }
-    requestAnimationFrame(frame);
-  })(performance.now());
+  const motion = matchMedia("(prefers-reduced-motion: reduce)");
+  const toggle = document.getElementById("motion-toggle");
+  let playing = false, visible = false, origin = 0, round = 0, frameID = null;
+  const paintStill = () => draw(LOOP - HOLD);
+  function frame(now) {
+    frameID = null;
+    if (!playing || !visible || motion.matches) return;
+    const t = (now - origin) / 1000, r = Math.floor(t / LOOP);
+    if (r !== round) { round = r; newRound(); }
+    draw(t - r * LOOP);
+    frameID = requestAnimationFrame(frame);
+  }
+  function update() {
+    if (frameID !== null) cancelAnimationFrame(frameID);
+    frameID = null;
+    toggle.disabled = motion.matches;
+    toggle.textContent = motion.matches ? "Reduced motion enabled" : playing ? "Pause animation" : "Play animation";
+    toggle.setAttribute("aria-pressed", String(playing && !motion.matches));
+    if (playing && visible && !motion.matches) {
+      origin = performance.now(); round = 0; newRound();
+      frameID = requestAnimationFrame(frame);
+    } else paintStill();
+  }
+  toggle.addEventListener("click", () => { playing = !playing; update(); });
+  motion.addEventListener("change", () => { playing = false; update(); });
+  new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; update(); }, {threshold:.2}).observe(cv);
+  addEventListener("resize", () => { if (!playing) paintStill(); });
+  update();
 })();

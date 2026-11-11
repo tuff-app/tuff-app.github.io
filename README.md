@@ -13,7 +13,7 @@ homepage and the [benchmark leaderboard](https://tuff-app.github.io/benchmarks/)
 It's plain HTML, CSS and JavaScript with no build step. To preview it, run
 `python3 -m http.server` here and open http://localhost:8000.
 
-The homepage comparison lists TUFF's 18 catalog models.
+The homepage uses the supplied TUFF 11 screenshots, a user-controlled expert-streaming diagram and concise installation requirements. Shared styles live in `assets/site.css`. The benchmark data and filters retain their existing behavior.
 
 The leaderboard data isn't stored here. Every hour, and on each push,
 `.github/workflows/deploy.yml` reads the reviewed posts in TUFF's
