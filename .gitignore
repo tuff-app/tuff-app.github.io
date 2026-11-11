@@ -1,1 +1,10 @@
 benchmarks/data.json
+
+# Local agent state and credentials
+.claude/settings.local.json
+*.jsonl
+.env
+.env.*
+!.env.example
+*.pem
+*.key

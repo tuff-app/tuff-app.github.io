@@ -7,7 +7,7 @@
 <meta name="description" content="TUFF runs language models locally on Apple Silicon, including mixture-of-experts models far bigger than your Mac's memory, with a native chat app and a local API.">
 <meta property="og:title" content="TUFF: the local AI app built for the Mac">
 <meta property="og:description" content="An open-source Mac app and Swift/Metal engine that streams model experts from the SSD, so models with 300B+ parameters run in 16 GB of memory.">
-<meta property="og:image" content="https://tuff-app.github.io/assets/tuff-film-poster.jpg">
+<meta property="og:image" content="https://tuff-app.github.io/assets/tuff-11-chat-light.png">
 <meta property="og:url" content="https://tuff-app.github.io/">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#fbfbfd">
@@ -18,8 +18,8 @@
     --bg-alt: #f5f5f7;
     --card: #ffffff;
     --ink: #1d1d1f;
-    --muted: #6e6e73;
-    --faint: #86868b;
+    --muted: #5c5c63;
+    --faint: #6e6e73;
     --line: rgba(0, 0, 0, 0.08);
     --violet: #6F4DFF;
     --violet-ink: #5a3bf0;
@@ -55,7 +55,7 @@
   nav .links { display: flex; gap: 30px; font-size: 13px; }
   nav .links a { color: var(--muted); text-decoration: none !important; transition: color .15s ease; }
   nav .links a:hover { color: var(--ink); }
-  nav .get { justify-self: end; font-size: 13px; font-weight: 500; color: #fff; background: var(--ink); padding: 5px 13px; border-radius: 999px; text-decoration: none !important; transition: opacity .15s ease; }
+  nav .get { justify-self: end; font-size: 13px; font-weight: 500; color: #fff; background: var(--violet); padding: 5px 13px; border-radius: 999px; text-decoration: none !important; transition: opacity .15s ease; }
   nav .get:hover { opacity: .85; }
   @media (max-width: 560px) { nav .links { display: none; } nav .wrap { grid-template-columns: 1fr 1fr; } }
   /* buttons */
@@ -63,47 +63,23 @@
   .button {
     display: inline-flex; align-items: center; gap: 8px; padding: 13px 26px; border-radius: 999px;
     font-size: 17px; font-weight: 600; border: 0; cursor: pointer; text-decoration: none !important;
-    transition: transform .2s var(--ease), box-shadow .2s ease, background .2s ease;
+    transition: background .2s ease;
   }
-  .button.primary { background: var(--violet); color: #fff; box-shadow: 0 10px 30px -12px rgba(111, 77, 255, .7); }
-  .button.primary:hover { transform: translateY(-1px) scale(1.02); box-shadow: 0 14px 34px -12px rgba(111, 77, 255, .85); }
+  .button.primary { background: var(--violet); color: #fff; }
+  .button.primary:hover { background: var(--violet-ink); }
   .button.ghost { color: var(--violet-ink); background: transparent; }
   .button.ghost:hover { background: var(--violet-wash); }
   .button svg { width: 18px; height: 18px; }
 
   /* hero */
   .hero { text-align: center; padding: 76px 0 34px; }
-  .hero .icon { width: 148px; height: 148px; margin: 0 auto 26px; filter: drop-shadow(0 24px 40px rgba(60, 30, 140, .22)); }
-  .hero h1 { font-size: clamp(56px, 9vw, 96px); line-height: 1; margin: 0 0 14px; letter-spacing: -0.045em; font-weight: 700; }
+  .hero .icon { width: 96px; height: 96px; margin: 0 auto 18px; }
+  .hero .name { font-size: 21px; font-weight: 600; letter-spacing: -0.01em; margin: 0 0 10px; }
+  .hero h1 { font-size: clamp(44px, 7.5vw, 80px); line-height: 1.02; margin: 0 auto 16px; letter-spacing: -0.045em; font-weight: 700; max-width: 900px; }
   .hero .sub { font-size: clamp(22px, 3vw, 30px); line-height: 1.2; font-weight: 600; letter-spacing: -0.02em; margin: 0 auto 10px; max-width: 760px; }
   .hero .lede { color: var(--muted); font-size: 19px; max-width: 640px; margin: 0 auto 28px; }
   .hero .meta { color: var(--faint); font-size: 13px; margin-top: 14px; min-height: 18px; }
 
-  /* film */
-  .film { padding: 26px 0 80px; }
-  .player {
-    position: relative; border-radius: var(--radius); overflow: hidden; background: #000;
-    box-shadow: 0 40px 80px -40px rgba(40, 20, 100, .45), 0 0 0 1px var(--line);
-    aspect-ratio: 16 / 9;
-  }
-  .film .player { margin-inline: 0; border-radius: 0; box-shadow: none; }
-  .player video { width: 100%; height: 100%; object-fit: cover; }
-  .player .play {
-    position: absolute; inset: 0; display: grid; place-items: center; border: 0; padding: 0; cursor: pointer;
-    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 55%, rgba(0, 0, 0, .28));
-    transition: opacity .35s ease;
-  }
-  .player .play span {
-    width: 84px; height: 84px; border-radius: 50%; display: grid; place-items: center;
-    background: rgba(255, 255, 255, .78); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, .25); transition: transform .25s var(--ease);
-  }
-  .player .play:hover span { transform: scale(1.06); }
-  .player .play svg { width: 30px; height: 30px; margin-left: 4px; fill: var(--ink); }
-  .player.playing .play { opacity: 0; pointer-events: none; }
-  .film .caption { text-align: center; color: var(--faint); font-size: 14px; margin-top: 16px; padding-inline: 22px; }
-
-  /* app screenshot */
   .app-preview { padding: 0 22px 80px; }
   .app-preview figure { max-width: 920px; margin: 0 auto; }
   .app-preview img { width: 100%; border-radius: 18px; box-shadow: 0 24px 60px -30px rgba(40, 20, 100, .3), 0 0 0 1px var(--line); }
@@ -111,6 +87,7 @@
 
   /* sections */
   section { padding: 84px 0; }
+  section#how { padding: 120px 0 104px; }
   section.alt { background: var(--bg-alt); }
   .eyebrow { color: var(--violet-ink); font-weight: 600; font-size: 17px; margin: 0 0 8px; }
   h2 { font-size: clamp(36px, 5.4vw, 56px); line-height: 1.06; letter-spacing: -0.035em; margin: 0 0 18px; font-weight: 700; }
@@ -125,11 +102,10 @@
   @media (max-width: 480px) { .hero { padding-top: 56px; } }
 
   /* features */
-  .features { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
-  .feature { background: var(--card); border-radius: 22px; padding: 24px 22px; box-shadow: 0 0 0 1px var(--line); }
-  .feature h3 { margin: 0 0 6px; font-size: 19px; letter-spacing: -0.02em; }
-  .feature p { margin: 0; color: var(--muted); font-size: 15px; }
-  @media (max-width: 900px) { .features { grid-template-columns: repeat(2, 1fr); } }
+  .features { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  .feature { background: var(--card); border-radius: 22px; padding: 32px 30px; box-shadow: 0 0 0 1px var(--line); }
+  .feature h3 { margin: 0 0 8px; font-size: 24px; letter-spacing: -0.025em; }
+  .feature p { margin: 0; color: var(--muted); font-size: 17px; }
   @media (max-width: 520px) { .features { grid-template-columns: 1fr; } }
 
   /* comparison */
@@ -159,7 +135,7 @@
     .compare tbody th { position: static; }
   }
   /* install */
-  .install { display: flex; align-items: center; justify-content: space-between; gap: 14px; background: var(--card); border-radius: 18px; padding: 14px 14px 14px 22px; box-shadow: 0 0 0 1px var(--line); max-width: 620px; margin: 28px auto 0; }
+  .install { display: flex; align-items: center; justify-content: space-between; gap: 14px; background: var(--card); border-radius: 999px; padding: 8px 8px 8px 24px; box-shadow: 0 0 0 1px var(--line); max-width: 620px; margin: 28px auto 0; }
   .install code { font: 15px ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--ink); overflow-x: auto; white-space: nowrap; }
   .install button { border: 0; background: var(--violet-wash); color: var(--violet-ink); font: inherit; font-size: 14px; font-weight: 600; padding: 8px 14px; border-radius: 999px; cursor: pointer; flex: none; }
   .small { color: var(--faint); font-size: 14px; margin-top: 14px; }
@@ -168,13 +144,9 @@
   footer .wrap { display: flex; flex-wrap: wrap; gap: 10px 26px; justify-content: space-between; }
   footer a { color: var(--muted); }
 
-  /* gentle reveal on scroll */
-  .reveal { opacity: 0; transform: translateY(24px); transition: opacity .9s var(--ease), transform .9s var(--ease); }
-  .reveal.shown { opacity: 1; transform: none; }
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
-    .reveal { opacity: 1; transform: none; transition: none; }
-    .button, .player .play span { transition: none; }
+    .button { transition: none; }
   }
 </style>
 </head>
@@ -189,45 +161,47 @@
       <a href="benchmarks/">Benchmarks</a>
       <a href="https://github.com/tuff-app/TUFF">GitHub</a>
     </div>
-    <a class="get download" href="https://github.com/tuff-app/TUFF/releases/latest">Download</a>
+    <a class="get download" href="https://github.com/tuff-app/TUFF/releases/download/v11.0.0/TUFF-v11.0.0-macos-arm64.zip">Download</a>
   </div>
 </nav>
 
 <main id="top">
   <header class="hero wrap">
-    <img class="icon" src="assets/tuff-icon.png" alt="TUFF app icon" width="148" height="148">
-    <h1>TUFF</h1>
-    <p class="sub">Run models bigger than your Mac's memory.</p>
-    <p class="lede">Local AI for Mac. Free and open source.</p>
+    <img class="icon" src="assets/tuff-icon.png" alt="" width="96" height="96">
+    <p class="name">TUFF 11</p>
+    <h1>Run a 397B model on a 16&nbsp;GB Mac.</h1>
+    <p class="lede">A free, open-source local AI app for Apple Silicon. It reads model experts from the SSD as it needs them, so models far bigger than memory still run. <a href="https://github.com/tuff-app/TUFF/discussions/59">Measured on a 16 GB M2</a>.</p>
     <div class="buttons">
-      <a class="button primary download" id="download" href="https://github.com/tuff-app/TUFF/releases/latest">Download for macOS</a>
+      <a class="button primary download" id="download" href="https://github.com/tuff-app/TUFF/releases/download/v11.0.0/TUFF-v11.0.0-macos-arm64.zip">Download for macOS</a>
       <a class="button ghost" href="#install">Homebrew ›</a>
     </div>
-    <p class="meta" id="release-meta">Apple Silicon, macOS 15 or newer</p>
+    <p class="meta" id="release-meta">Apple Silicon, macOS 15 or newer · v11.0.0</p>
   </header>
-
-  <div class="film">
-    <div class="player reveal" id="player">
-      <video id="film" src="assets/tuff-film.mp4" poster="assets/tuff-film-poster.jpg" preload="metadata" playsinline></video>
-      <button class="play" id="play" aria-label="Play the film"><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l13-7.5z"/></svg></span></button>
-    </div>
-    <p class="caption">A real Qwen3.8 Flash Next run on a 16 GB MacBook Air, sped up.</p>
-  </div>
 
   <div class="app-preview wrap">
     <figure>
-      <a href="assets/tuff-chat.webp" aria-label="View the full-size TUFF screenshot">
-        <img src="assets/tuff-chat.webp" alt="TUFF chatting with Qwen3.8 Flash Next on a 16 GB MacBook Air" width="2000" height="1385" loading="lazy" decoding="async">
-      </a>
-      <figcaption>TUFF chatting with Qwen3.8 Flash Next on a 16 GB MacBook Air.</figcaption>
+      <a href="assets/tuff-11-chat-light.png" aria-label="View TUFF 11 coding chat full size"><picture><source srcset="assets/tuff-11-chat-dark.png" media="(prefers-color-scheme: dark)"><img src="assets/tuff-11-chat-light.png" alt="TUFF 11 generating Python code with local Gemma 4 E2B" decoding="async"></picture></a>
+      <figcaption>A real local Gemma chat in TUFF 11. Light and dark, built for the Mac.</figcaption>
     </figure>
   </div>
 
+  <section id="new">
+    <div class="wrap">
+      <div class="center"><h2>A fresh look.<br><span class="soft">More ways to chat locally.</span></h2>
+      <p class="intro">TUFF 11 brings a redesigned chat, clearer code blocks, a new Settings hub and adaptive smooth streaming, on by default. <a href="https://github.com/tuff-app/TUFF/releases/tag/v11.0.0">Read the 11.0.0 release notes</a>.</p></div>
+      <div class="features">
+        <div class="feature"><h3>Apple Foundation Model</h3><p>Chat with Apple's on-device model on eligible Macs with macOS 26 or later and Apple Intelligence ready. Keep a separate system prompt and return to the same model in each saved chat. No cloud endpoint is offered here.</p></div>
+        <div class="feature"><h3>A steadier stream</h3><p>Responses appear at a smooth, adaptive pace. Unicode and emoji stay intact, and you can turn smoothing off in Settings.</p></div>
+      </div>
+      <p class="small center"><a href="assets/tuff-11-chat-light.png">View light appearance</a> · <a href="assets/tuff-11-chat-dark.png">View dark appearance</a></p>
+    </div>
+  </section>
+
   <section class="alt" id="how">
     <div class="wrap">
-      <div class="center reveal">
-        <h2>300B+ parameters.<br><span class="soft">In 16 GB of memory.</span></h2>
-        <p class="intro">Mixture-of-experts models only use a few experts per token. TUFF leaves the rest on the SSD and reads just what it needs.</p>
+      <div class="center">
+        <h2>A 239 GB model.<br><span class="soft">In 16 GB of memory.</span></h2>
+        <p class="intro">Mixture-of-experts models only use a few experts per token. TUFF leaves the rest on the SSD and reads just what it needs, so Ornith 1.5 397B runs on a 16 GB MacBook Air. Slowly, but it runs, and smaller MoE models run at reading speed.</p>
       </div>
     </div>
   </section>
@@ -240,21 +214,21 @@
   <section>
     <div class="wrap">
       <div class="features">
-        <div class="feature reveal"><h3>Web and file search</h3><p>Off until you turn it on. Answers cite their sources.</p></div>
-        <div class="feature reveal"><h3>Local API</h3><p>OpenAI-compatible, for agents and other apps.</p></div>
-        <div class="feature reveal"><h3>Benchmarks</h3><p>Test your Mac and post it to the <a href="benchmarks/">leaderboard</a>.</p></div>
-        <div class="feature reveal"><h3>Saved chats</h3><p>Pick a chat back up without reprocessing it.</p></div>
+        <div class="feature"><h3>Web and file search</h3><p>Off until you turn it on. Answers cite their sources.</p></div>
+        <div class="feature"><h3>Local API</h3><p>OpenAI and Anthropic compatible, for agents and other apps. Other devices on your network can use it with a key.</p></div>
+        <div class="feature"><h3>Benchmarks</h3><p>Test your Mac and post it to the <a href="benchmarks/">leaderboard</a>.</p></div>
+        <div class="feature"><h3>Saved chats</h3><p>Pick a chat back up without reprocessing it.</p></div>
       </div>
     </div>
   </section>
 
   <section id="compare">
     <div class="wrap">
-      <div class="center reveal">
+      <div class="center">
         <h2>How TUFF compares.</h2>
       </div>
       <p class="compare-hint" id="compare-hint">Swipe or scroll to compare every app. TUFF is the first column.</p>
-      <div class="compare reveal" role="region" aria-label="Product comparison table" aria-describedby="compare-hint" tabindex="0">
+      <div class="compare" role="region" aria-label="Product comparison table" aria-describedby="compare-hint" tabindex="0">
         <table>
           <thead><tr><th></th><th class="us">TUFF</th><th><a href="https://lmstudio.ai/docs/app">LM Studio</a></th><th><a href="https://ollama.com/blog/new-app">Ollama</a></th><th><a href="https://github.com/JustVugg/colibri">Colibrì</a></th><th><a href="https://github.com/drumih/turbo-fieldfare">TurboFieldfare</a></th></tr></thead>
           <tbody>
@@ -279,9 +253,9 @@
   </section>
 
   <section class="alt" id="install">
-    <div class="narrow center reveal">
+    <div class="narrow center">
       <h2>Get TUFF.</h2>
-      <div class="buttons"><a class="button primary download" href="https://github.com/tuff-app/TUFF/releases/latest">Download for macOS</a></div>
+      <div class="buttons"><a class="button primary download" href="https://github.com/tuff-app/TUFF/releases/download/v11.0.0/TUFF-v11.0.0-macos-arm64.zip">Download for macOS</a></div>
       <div class="install"><code id="brew">brew install --cask tuff-app/tap/tuff</code><button id="copy" type="button">Copy</button></div>
       <p class="small">Not notarized yet, so the first time, Control-click the app and choose Open.</p>
       <p class="small">Open source under Apache 2.0 on <a href="https://github.com/tuff-app/TUFF">GitHub</a>.</p>
@@ -298,7 +272,7 @@
 
 <script>
   // Point every download button straight at the newest packaged build. The releases page
-  // stays the href in the markup, so the buttons still work if this request fails.
+  // has a versioned fallback in the markup if the request fails.
   (async () => {
     const buttons = document.querySelectorAll(".download");
     const meta = document.getElementById("release-meta");
@@ -315,23 +289,12 @@
     }
   })();
 
-  // The film: a big play button over the poster; native controls once it's playing.
-  const player = document.getElementById("player"), film = document.getElementById("film");
-  document.getElementById("play").addEventListener("click", () => {
-    player.classList.add("playing"); film.controls = true; film.play();
-  });
-  film.addEventListener("ended", () => { player.classList.remove("playing"); film.controls = false; film.load(); });
-
   // Copy the Homebrew command.
   document.getElementById("copy").addEventListener("click", async (e) => {
     try { await navigator.clipboard.writeText(document.getElementById("brew").textContent); e.target.textContent = "Copied"; }
     catch { e.target.textContent = "Select it"; }
     setTimeout(() => { e.target.textContent = "Copy"; }, 1600);
   });
-
-  // Fade sections in as they scroll into view.
-  const io = new IntersectionObserver((entries) => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add("shown"); io.unobserve(e.target); } }), { threshold: 0.12 });
-  document.querySelectorAll(".reveal").forEach(el => io.observe(el));
 </script>
 <script src="assets/chip.js"></script>
 </body>

@@ -7,7 +7,7 @@ homepage and the [benchmark leaderboard](https://tuff-app.github.io/benchmarks/)
 | --- | --- |
 | `index.html` | The homepage |
 | `benchmarks/` | The leaderboard page and its script |
-| `assets/` | Images, the film (`tuff-film.mp4`) and its poster frame |
+| `assets/` | TUFF 11 app screenshots, icon and chip animation |
 | `TUFF/` | Redirects from the old `tuff-app.github.io/TUFF/` addresses |
 
 It's plain HTML, CSS and JavaScript with no build step. To preview it, run
