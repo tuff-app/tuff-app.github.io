@@ -21,21 +21,16 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      pages: write
-      id-token: write
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           persist-credentials: false
       # The leaderboard script and the benchmark suite live with the app.
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           repository: tuff-app/TUFF
           path: tuff
@@ -52,9 +47,31 @@ jobs:
         run: |
           mkdir -p "$RUNNER_TEMP/site"
           cp -R index.html assets benchmarks TUFF "$RUNNER_TEMP/site/"
-      - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: ${{ runner.temp }}/site
+
+  # Deploying is its own job on purpose. Run straight after the upload in the
+  # same job, deploy-pages sometimes lists the run's artifacts before the one
+  # just uploaded shows up, and fails with "No artifacts named github-pages"
+  # (actions/deploy-pages#451). A job that starts later finds it, and can try
+  # again without uploading a second copy.
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.retry.outputs.page_url || steps.deployment.outputs.page_url }}
+    steps:
       - id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
+        continue-on-error: true
+      - name: Wait before trying again
+        if: steps.deployment.outcome == 'failure'
+        run: sleep 30
+      - id: retry
+        if: steps.deployment.outcome == 'failure'
+        uses: actions/deploy-pages@v5
